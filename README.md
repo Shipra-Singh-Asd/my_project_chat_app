@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+<!--# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +67,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)-->
+# Real time Chat App
+
+Real-time chat applications allow users to communicate with each other in real time through text. It is virtually any online communication that provides a real-time or live transmission of text messages from sender to receiver.
+
+## Tech Used
+
+* ReactJs
+* NodeJs
+* ExpressJs
+* Socket.IO
+  
