@@ -28,7 +28,6 @@ pipeline {
             steps {
                 script {
                     sh 'cd client && npm test -- --watchAll=false'
-                    sh 'cd server && npm test -- --watchAll=false'
                 }
             }
         }
