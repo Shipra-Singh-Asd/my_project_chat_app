@@ -9,50 +9,71 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Shipra-Singh-Asd/my_project_chat_app.git'
+                git branch: 'main', url: 'https://github.com/Shipra-Singh-Asd/my_project_chat_app.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                dir('client') {
-                    sh 'npm install'
-                }
-                dir('server') {
+                script {
                     sh 'npm install'
                 }
             }
         }
 
-        stage('Build Client') {
+        stage('Run Tests') {
             steps {
-                dir('client') {
+                script {
+                    sh 'cd client && npm test -- --watchAll=false'
+                }
+            }
+        }
+
+        stage('Code Analysis with SonarQube') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQube') {  // Ensure SonarQube is configured in Jenkins
+                        sh 'npm run sonar'  // Make sure SonarQube is set up in package.json
+                    }
+                }
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                script {
                     sh 'npm run build'
                 }
             }
         }
 
-        stage('Build Server') {
+        stage('Build Docker Image') {
             steps {
-                dir('server') {
-                    sh 'npm run build'
+                script {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Run Docker Container') {
             steps {
-                sh 'docker build -t my-client-image:latest ./client'
-                sh 'docker build -t my-server-image:latest ./server'
+                script {
+                    sh "docker stop ${CONTAINER_NAME} || true"
+                    sh "docker rm ${CONTAINER_NAME} || true"
+                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
+                }
             }
         }
+    }
 
-        stage('Run Docker Containers') {
-            steps {
-                sh 'docker-compose up -d'
-            }
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
         }
     }
 }
