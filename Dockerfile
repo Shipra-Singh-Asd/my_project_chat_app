@@ -6,11 +6,6 @@ RUN npm install
 COPY client/. .
 RUN npm run build
 
-COPY server/package.json client/package-lock.json ./
-RUN npm install
-COPY server/. .
-RUN npm run build
-
 # Use Nginx to serve the built React app
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
