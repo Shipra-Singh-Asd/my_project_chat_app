@@ -19,6 +19,7 @@ pipeline {
             steps {
                 script {
                     sh 'cd client && npm install'
+                    sh 'cd server && npm install'
                 }
             }
         }
@@ -27,6 +28,7 @@ pipeline {
             steps {
                 script {
                     sh 'cd client && npm test -- --watchAll=false'
+                    sh 'cd server && npm test -- --watchAll=false'
                 }
             }
         }
@@ -52,7 +54,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker build -t ${CLIENT_IMAGE}:${IMAGE_TAG} ./client"
+                    sh "docker build -t ${SERVER_IMAGE}:${IMAGE_TAG} ./server"
                 }
             }
         }
@@ -60,13 +63,14 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh "docker stop ${CONTAINER_NAME} || true"
-                    sh "docker rm ${CONTAINER_NAME} || true"
-                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker stop ${CLIENT_CONTAINER} || true && docker rm ${CLIENT_CONTAINER} || true"
+                    sh "docker stop ${SERVER_CONTAINER} || true && docker rm ${SERVER_CONTAINER} || true"
+                    sh "docker network create my_network || true"
+                    sh "docker run -d --network=my_network -p 3000:3000 --name ${CLIENT_CONTAINER} ${CLIENT_IMAGE}:${IMAGE_TAG}"
+                    sh "docker run -d --network=my_network -p 5000:5000 --name ${SERVER_CONTAINER} ${SERVER_IMAGE}:${IMAGE_TAG}"
                 }
             }
         }
-    }
 
     post {
         success {
