@@ -26,7 +26,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh 'cd client && pwd && ls -al && cat package.json && npm test -- --watchAll=false'
+                    sh 'npm test -- --watchAll=false'
                 }
             }
         }
