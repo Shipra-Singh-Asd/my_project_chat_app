@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(installationName:"sq1") {  // Ensure SonarQube is configured in Jenkins
-                        sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar' 
+                        sh 'npm run sonar'  // Make sure SonarQube is set up in package.json
                     }
                 }
             }
