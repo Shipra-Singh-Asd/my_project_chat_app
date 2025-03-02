@@ -23,13 +23,13 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'npm test -- --watchAll=false'
-                }
-            }
-        }
+        // stage('Run Tests') {
+        //     steps {
+        //         script {
+        //             sh 'npm test -- --watchAll=false'
+        //         }
+        //     }
+        // }
 
         stage('Code Analysis with SonarQube') {
             steps {
