@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://your-repo.git'
+                git 'https://github.com/Shipra-Singh-Asd/my_project_chat_app.git'
             }
         }
 
