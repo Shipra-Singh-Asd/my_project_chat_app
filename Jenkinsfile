@@ -9,71 +9,50 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/Shipra-Singh-Asd/my_project_chat_app.git'
+                git 'https://your-repo.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                script {
+                dir('client') {
+                    sh 'npm install'
+                }
+                dir('server') {
                     sh 'npm install'
                 }
             }
         }
 
-        stage('Run Tests') {
+        stage('Build Client') {
             steps {
-                script {
-                    sh 'npm test -- --watchAll=false'
-                }
-            }
-        }
-
-        stage('Code Analysis with SonarQube') {
-            steps {
-                script {
-                    withSonarQubeEnv('SonarQube') {  // Ensure SonarQube is configured in Jenkins
-                        sh 'npm run sonar'  // Make sure SonarQube is set up in package.json
-                    }
-                }
-            }
-        }
-
-        stage('Build React App') {
-            steps {
-                script {
+                dir('client') {
                     sh 'npm run build'
                 }
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Server') {
             steps {
-                script {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                dir('server') {
+                    sh 'npm run build'
                 }
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Build Docker Images') {
             steps {
-                script {
-                    sh "docker stop ${CONTAINER_NAME} || true"
-                    sh "docker rm ${CONTAINER_NAME} || true"
-                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
-                }
+                sh 'docker build -t my-client-image:latest ./client'
+                sh 'docker build -t my-server-image:latest ./server'
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Deployment successful!'
-        }
-        failure {
-            echo 'Deployment failed!'
+        stage('Run Docker Containers') {
+            steps {
+                sh 'docker-compose up -d'
+            }
         }
     }
 }
