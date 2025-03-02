@@ -19,6 +19,7 @@ pipeline {
             steps {
                 script {
                     sh 'cd client && npm install'
+                    sh 'cd server && npm install'
                 }
             }
         }
@@ -27,6 +28,7 @@ pipeline {
             steps {
                 script {
                     sh 'cd client && npm test -- --watchAll=false'
+                    sh 'cd server && npm test -- --watchAll=false'
                 }
             }
         }
