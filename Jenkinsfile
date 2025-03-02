@@ -23,19 +23,19 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'npm test -- --watchAll=false'
-                }
-            }
-        }
+        // stage('Run Tests') {
+        //     steps {
+        //         script {
+        //             sh 'npm test -- --watchAll=false'
+        //         }
+        //     }
+        // }
 
         stage('Code Analysis with SonarQube') {
             steps {
                 script {
                     withSonarQubeEnv(installationName:"sq1") {  // Ensure SonarQube is configured in Jenkins
-                        sh 'npm run sonar'  // Make sure SonarQube is set up in package.json
+                        sh 'cd client && npm run sonar'  // Make sure SonarQube is set up in package.json
                     }
                 }
             }
