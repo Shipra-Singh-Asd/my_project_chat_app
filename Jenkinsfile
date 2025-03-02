@@ -18,7 +18,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'npm install'
+                    sh 'cd client && npm install'
                 }
             }
         }
