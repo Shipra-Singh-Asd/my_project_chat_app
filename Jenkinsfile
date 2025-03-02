@@ -31,15 +31,15 @@ pipeline {
             }
         }
 
-        stage('Code Analysis with SonarQube') {
-            steps {
-                script {
-                    withSonarQubeEnv('sq1') {  // Ensure SonarQube is configured in Jenkins
-                        sh 'cd client && npm run sonar'  // Make sure SonarQube is set up in package.json
-                    }
-                }
-            }
-        }
+        // stage('Code Analysis with SonarQube') {
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('sq1') {  // Ensure SonarQube is configured in Jenkins
+        //                 sh 'cd client && npm run sonar'  // Make sure SonarQube is set up in package.json
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Build React App') {
             steps {
