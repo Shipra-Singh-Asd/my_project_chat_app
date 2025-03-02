@@ -1,7 +1,7 @@
 # Use Node.js for building the app
 FROM node:22.11.0 as build
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY client/package.json client/package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
