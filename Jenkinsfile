@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "my-react-app"
+        IMAGE_NAME = "jenkins-data-jenkins"
         IMAGE_TAG = "latest"
-        CONTAINER_NAME = "react-container"
+        CONTAINER_NAME = "jenkins"
         SONARQUBE_URL = "http://localhost:9000"  // Update based on your SonarQube setup
     }
 
@@ -63,7 +63,7 @@ pipeline {
                 script {
                     sh "docker stop ${CONTAINER_NAME} || true"
                     sh "docker rm ${CONTAINER_NAME} || true"
-                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker run -d -p 3000:3000 -p 5000:5000 --name my-app ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }

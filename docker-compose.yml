@@ -1,9 +1,9 @@
 services:
   react-app:
     build: .
-    container_name: react-container
+    container_name: jenkins
     ports:
-      - "3000:80"
+      - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
