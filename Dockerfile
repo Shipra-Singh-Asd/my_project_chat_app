@@ -3,7 +3,7 @@ FROM node:22.11.0 as build
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 RUN npm install
-COPY client/. .
+COPY . .
 RUN npm run build
 
 
